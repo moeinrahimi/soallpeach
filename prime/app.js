@@ -1,10 +1,8 @@
 const fs = require('fs');
-const path = require('path');
-var myArgs = process.argv.slice(2);
-let file = myArgs[0] || 'sample.txt';
+let file = process.argv[2]
 const readline = require('readline');
 const readInterface = readline.createInterface({
-  input: fs.createReadStream(path.resolve(__dirname,file))
+  input: fs.createReadStream(file)
 });
 function isPrime(n) {
   if (n === 1) {
@@ -21,7 +19,7 @@ function isPrime(n) {
   }
 }
 readInterface.on('line', function (number) {
-  if (isPrime(number)) console.log(`${number} is prime !`);
+  if(isPrime(number)) console.log(`${number} is prime !`);
 });
 
 
