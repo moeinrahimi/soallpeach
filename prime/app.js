@@ -20,25 +20,34 @@ function isPrime(num) {
   return prime;
 }
 
-const isPrime3 = (n) =>
-  ![...Array(n).keys()]
+function isPrime3 (n){
+  return ![...Array(n).keys()]
     .slice(2)
     .map((i) => !(n % i))
     .includes(true) && ![0, 1].includes(n);
-let numbs = numbers.split('\n');
-let length = numbs.length;
-let result = [];
-
-for (let i = 0; i < length; i++) {
-  let number = numbs[i];
-  if (isPrime3(number)) {
-    result.push(1);
-  } else {
-    result.push(0);
   }
-}
+let numbs = numbers.split('\n');
 
-result = result.join('\n');
+// let length = numbs.length;
+// let result = [];
+
+// for (let i = 0; i < length; i++) {
+//   let number = numbs[i];
+//   if (isPrime3(number)) {
+//     result.push(1);
+//   } else {
+//     console.log(number)
+//     result.push(0);
+//   }
+// }
+let result = numbs.map(number => {
+  if (isPrime(number))
+    return 1
+  return 0
+
+}).join('\n');
+
+
 if (outputPath) {
   fs.writeFileSync(outputPath, result);
 } else {
