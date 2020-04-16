@@ -21,8 +21,11 @@ let numbs = numbers.split('\n')
 let result = []
 numbs.forEach(number => {
     if (isPrime(number)) {
-      result.push(number)
+      result.push(1)
+    } else {
+      result.push(0)
     }
+
 })
 result=result.join('\n')
 if (outputPath) {
