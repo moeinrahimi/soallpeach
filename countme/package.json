@@ -1,0 +1,15 @@
+{
+  "name": "countme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "moein",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^2.13.1",
+    "fastify-formbody": "^3.1.0"
+  }
+}
