@@ -1,40 +1,44 @@
-const fastify = require('fastify')({
-  // logger: true
-})
-fastify.register(require('fastify-formbody'))
-// const rawBody = require('raw-body')
-// fastify.addContentTypeParser('*', (req, done) => {
-//   console.log(req.headers['content-length'])
-//   rawBody(req, {
-//     length: req.headers['content-length'],
-//     limit: '1mb',
-//     encoding: 'utf8', // Remove if you want a buffer
-//   }, (err, body) => {
-//   console.log("body", body)
-//     if (err) return done(err)
-//     done(null, parse(body))
-//   })
-// })
-let sum = 0
+const http = require('http');
+let sum = 0;
+const server = http.createServer((req, res) => {
+  req.on('error', (err) => {
+    console.error(err);
+    // Handle error...
+    res.statusCode = 400;
+    res.end('400: Bad Request');
+    return;
+  });
 
-fastify.post('/', function (req, reply) {
-  // console.log(req.body,'-------')
-  // let number = Number(Object.keys(req.body)[0])
-  // console.log("number", number)
-  sum += parseInt(req.body)
-  console.log("sum", sum)
-  return reply.send(sum)
-})
-fastify.get('/count', function (req, reply) {
+  res.on('error', (err) => {
+    console.error(err);
+    // Handle error...
+  });
+  console.log(req.url);
+  res.statusCode = 200;
 
-  return reply.send(sum)
-})
-
-
-fastify.listen(80,'0.0.0.0', function (err, address) {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
+  if (req.url === '/' && req.method === 'POST') {
+    // console.log('here');
+    let body = [];
+    req
+      .on('data', (chunk) => {
+        body.push(chunk);
+      })
+      .on('end', () => {
+        body = Buffer.concat(body).toString();
+        // console.log('body', body);
+        sum += Number(body);
+        res.end(sum.toString());
+        // at this point, `body` has the entire request body stored in it as a string
+      });
+  } else if (req.url === '/count' && req.method === 'GET') {
+    // console.log('sum', sum);
+    res.end(''+sum);
+  } else {
+    res.statusCode = 404;
+    res.end('404: File Not Found');
   }
-  console.log(`server listening on ${address}`)
-})
+});
+
+server.listen(80, () => {
+  console.log('Example app listening on port 8080!');
+});
